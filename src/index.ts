@@ -23,4 +23,48 @@
  *
  */
 
-console.log('index.ts');
+/**
+ * ESlimLoggerLogLevel
+ */
+enum ESlimLoggerLogLevel {
+  'verbose' = 0,
+  'info' = 1,
+  'debug' = 2,
+  'warn' = 3,
+  'success' = 4,
+  'error' = 5,
+}
+
+type SlimLoggerLogColors = {
+  verbose?: string;
+  info?: string;
+  debug?: string;
+  warn?: string;
+  success?: string;
+  error?: string;
+};
+
+/**
+ * SlimLoggerGlobalOptions
+ */
+type SlimLoggerGlobalOptions = {
+  logLevel?: ESlimLoggerLogLevel;
+  logColors?: SlimLoggerLogColors;
+};
+export default class SlimLogger {
+  static globals: SlimLoggerGlobalOptions = {
+    logLevel: ESlimLoggerLogLevel.verbose,
+  };
+
+  private tag: string;
+  constructor(tag: string) {
+    this.tag = tag;
+  }
+
+  verbose() {}
+  info() {}
+  debug() {}
+  warn() {}
+  success() {}
+  error() {}
+}

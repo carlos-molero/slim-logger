@@ -135,7 +135,7 @@ export default class SlimLogger {
     let color;
     let parametrizedMessage = message;
 
-    if (parseInt(ESlimLoggerLogLevels[callee as any]) >= SlimLogger.Globals!.logLevel!) {
+    if (Number(ESlimLoggerLogLevels[callee as any]) >= SlimLogger.Globals!.logLevel!) {
       const colors = SlimLogger.Globals.logColors as any;
       const defaultColors = defaultSlimLoggerLogColors as any;
       color = colors && colors[callee] ? colors[callee] : defaultColors[callee];

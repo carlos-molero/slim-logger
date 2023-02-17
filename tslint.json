@@ -4,6 +4,7 @@
     "exclude": ["lib/*"]
   },
   "rules": {
-    "only-arrow-functions": false
+    "only-arrow-functions": false,
+    "no-console": false
   }
 }

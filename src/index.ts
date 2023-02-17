@@ -115,7 +115,7 @@ export default class SlimLogger {
     this.tag = tag;
   }
   /**
-   * Gets the current timestamp.
+   * Returns the current timestamp.
    *
    * @returns {string} current ISO date string
    */
@@ -128,6 +128,8 @@ export default class SlimLogger {
    * @param {string} callee the callee function name
    * @param {string} message
    * @param {any[]} params
+   *
+   * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
   private log(callee: string, message: string, ...params: any[]): SlimLoggerLogOutput {
     let color;
@@ -157,11 +159,12 @@ export default class SlimLogger {
     };
   }
   /**
-   * Iterates over each param in the array replacing the number placeholders
-   * with the value of the param.
+   * Iterates over each param replacing the placeholder by its value.
    *
    * @param {string} message
    * @param {any[]} params
+   *
+   * @returns {string}
    */
   private replacePlaceholdersByParams(message: string, ...params: any[]): string {
     if (!params || params[0].length === 0) return message;
@@ -177,6 +180,8 @@ export default class SlimLogger {
    *
    * @param message
    * @param params
+   *
+   * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
   verbose(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('verbose', message, ...params);
@@ -186,6 +191,8 @@ export default class SlimLogger {
    *
    * @param message
    * @param params
+   *
+   * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
   info(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('info', message, ...params);
@@ -195,6 +202,8 @@ export default class SlimLogger {
    *
    * @param message
    * @param params
+   *
+   * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
   debug(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('debug', message, ...params);
@@ -204,6 +213,8 @@ export default class SlimLogger {
    *
    * @param message
    * @param params
+   *
+   * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
   warn(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('warn', message, ...params);
@@ -213,6 +224,8 @@ export default class SlimLogger {
    *
    * @param message
    * @param params
+   *
+   * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
   success(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('success', message, ...params);
@@ -222,6 +235,8 @@ export default class SlimLogger {
    *
    * @param message
    * @param params
+   *
+   * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
   error(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('error', message, ...params);

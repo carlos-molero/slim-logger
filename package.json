@@ -1,6 +1,6 @@
 {
-  "name": "@carlosmta/browser-logger",
-  "version": "0.0.0-beta",
+  "name": "@carlosmta/slim-logger",
+  "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:carlos-molero/slim-logger.git",
   "author": "carlos-molero <carlos.mta@outlook.es>",

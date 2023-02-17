@@ -1,4 +1,4 @@
-# Slim Logger
+# Browser Logger
 
 [![Tests](https://github.com/carlos-molero/slim-logger/actions/workflows/test.yml/badge.svg)](https://github.com/carlos-molero/pure-js-mapper/actions/workflows/test.yml)
 ![Version](https://img.shields.io/badge/Version-0.0.0--beta-blue)

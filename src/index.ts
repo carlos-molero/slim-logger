@@ -24,9 +24,9 @@
  */
 
 /**
- * ESlimLoggerLogLevel
+ * EBrowserLoggerLogLevel
  */
-enum ESlimLoggerLogLevel {
+enum EBrowserLoggerLogLevel {
   'verbose' = 0,
   'info' = 1,
   'debug' = 2,
@@ -35,7 +35,10 @@ enum ESlimLoggerLogLevel {
   'error' = 5,
 }
 
-type SlimLoggerLogColors = {
+/**
+ * BrowserLoggerLogColors
+ */
+type BrowserLoggerLogColors = {
   verbose?: string;
   info?: string;
   debug?: string;
@@ -45,26 +48,70 @@ type SlimLoggerLogColors = {
 };
 
 /**
- * SlimLoggerGlobalOptions
+ * BrowserLoggerGlobalOptions
  */
-type SlimLoggerGlobalOptions = {
-  logLevel?: ESlimLoggerLogLevel;
-  logColors?: SlimLoggerLogColors;
+type BrowserLoggerGlobalOptions = {
+  appName?: string;
+  logLevel?: EBrowserLoggerLogLevel;
+  logColors?: BrowserLoggerLogColors;
 };
-export default class SlimLogger {
-  static globals: SlimLoggerGlobalOptions = {
-    logLevel: ESlimLoggerLogLevel.verbose,
-  };
 
+const defaultBrowserLoggerLogColors: BrowserLoggerLogColors = {
+  verbose: '#B9C1C6',
+  info: '#2BA2E6',
+  debug: '#914FF7',
+  warn: '#EDAA2C',
+  success: '#3ED553',
+  error: '#EE451F',
+};
+export default class BrowserLogger {
+  static globals: BrowserLoggerGlobalOptions = {
+    logLevel: EBrowserLoggerLogLevel.verbose,
+  };
   private tag: string;
+
   constructor(tag: string) {
     this.tag = tag;
   }
 
-  verbose() {}
-  info() {}
-  debug() {}
-  warn() {}
-  success() {}
-  error() {}
+  private getTimestamp(): string {
+    return new Date().toISOString();
+  }
+
+  private log(callee: string, ...message: any[]): void {
+    if (parseInt(EBrowserLoggerLogLevel[callee as any]) >= BrowserLogger.globals!.logLevel!) {
+      const colors = BrowserLogger.globals.logColors as any;
+      let color = colors && colors[callee] ? colors[callee] : (defaultBrowserLoggerLogColors as any)[callee];
+
+      console.log(
+        `%c (${callee.toUpperCase()})`,
+        `color: ${color}`,
+        `[${this.getTimestamp()}] ${BrowserLogger.globals.appName || ''}: ${this.tag}`,
+        ...message,
+      );
+    }
+  }
+  verbose(...message: any[]) {
+    this.log('verbose', ...message);
+  }
+
+  info(...message: any[]) {
+    this.log('info', ...message);
+  }
+
+  debug(...message: any[]) {
+    this.log('debug', ...message);
+  }
+
+  warn(...message: any[]) {
+    this.log('warn', ...message);
+  }
+
+  success(...message: any[]) {
+    this.log('success', ...message);
+  }
+
+  error(...message: any[]) {
+    this.log('error', ...message);
+  }
 }

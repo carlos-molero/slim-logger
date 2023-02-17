@@ -24,9 +24,34 @@
  */
 
 /**
- * EBrowserLoggerLogLevel
+ * ESlimLoggerColors
  */
-enum EBrowserLoggerLogLevel {
+export enum ESlimLoggerColors {
+  Black = '\x1b[30m',
+  Red = '\x1b[31m',
+  Green = '\x1b[32m',
+  Yellow = '\x1b[33m',
+  Blue = '\x1b[34m',
+  Magenta = '\x1b[35m',
+  Cyan = '\x1b[36m',
+  White = '\x1b[37m',
+  BrightBlack = '\x1b[90m',
+  BrightRed = '\x1b[91m',
+  BrightGreen = '\x1b[92m',
+  BrightYellow = '\x1b[93m',
+  BrightBlue = '\x1b[94m',
+  BrightMagenta = '\x1b[95m',
+  BrightCyan = '\x1b[96m',
+  BrightWhite = '\x1b[97m',
+  Gray = '\x1b[90m',
+  Grey = '\x1b[90m',
+  BrightGray = '\x1b[37;1m',
+  BrightGrey = '\x1b[37;1m',
+}
+/**
+ * ESlimLoggerLogLevel
+ */
+export enum ESlimLoggerLogLevels {
   'verbose' = 0,
   'info' = 1,
   'debug' = 2,
@@ -34,84 +59,171 @@ enum EBrowserLoggerLogLevel {
   'success' = 4,
   'error' = 5,
 }
-
 /**
- * BrowserLoggerLogColors
+ * SlimLoggerLogColors
  */
-type BrowserLoggerLogColors = {
-  verbose?: string;
-  info?: string;
-  debug?: string;
-  warn?: string;
-  success?: string;
-  error?: string;
+type SlimLoggerLogColors = {
+  verbose?: ESlimLoggerColors;
+  info?: ESlimLoggerColors;
+  debug?: ESlimLoggerColors;
+  warn?: ESlimLoggerColors;
+  success?: ESlimLoggerColors;
+  error?: ESlimLoggerColors;
 };
-
 /**
- * BrowserLoggerGlobalOptions
+ * SlimLoggerGlobalOptions
  */
-type BrowserLoggerGlobalOptions = {
+type SlimLoggerGlobalOptions = {
   appName?: string;
-  logLevel?: EBrowserLoggerLogLevel;
-  logColors?: BrowserLoggerLogColors;
+  logLevel?: ESlimLoggerLogLevels;
+  logColors?: SlimLoggerLogColors;
+};
+type SlimLoggerLogOutput = {
+  appName?: string;
+  color: string;
+  message: string;
+  callee: string;
+  tag: string;
+};
+/**
+ * defaultSlimLoggerLogColors
+ */
+const defaultSlimLoggerLogColors: SlimLoggerLogColors = {
+  verbose: ESlimLoggerColors.Gray,
+  info: ESlimLoggerColors.BrightBlue,
+  debug: ESlimLoggerColors.BrightMagenta,
+  warn: ESlimLoggerColors.BrightYellow,
+  success: ESlimLoggerColors.BrightGreen,
+  error: ESlimLoggerColors.BrightRed,
 };
 
-const defaultBrowserLoggerLogColors: BrowserLoggerLogColors = {
-  verbose: '#B9C1C6',
-  info: '#2BA2E6',
-  debug: '#914FF7',
-  warn: '#EDAA2C',
-  success: '#3ED553',
-  error: '#EE451F',
-};
-export default class BrowserLogger {
-  static globals: BrowserLoggerGlobalOptions = {
-    logLevel: EBrowserLoggerLogLevel.verbose,
+/**
+ * A simple logger library which wraps console.log API adding handy functionalities.
+ */
+export default class SlimLogger {
+  static Globals: SlimLoggerGlobalOptions = {
+    logLevel: ESlimLoggerLogLevels.verbose,
   };
   private tag: string;
 
+  /**
+   * Creates a SlimLogger instance.
+   *
+   * @param {string} tag The name of the file where the logger is created
+   */
   constructor(tag: string) {
     this.tag = tag;
   }
-
+  /**
+   * Gets the current timestamp.
+   *
+   * @returns {string} current ISO date string
+   */
   private getTimestamp(): string {
     return new Date().toISOString();
   }
+  /**
+   * Calls the console.log function.
+   *
+   * @param {string} callee the callee function name
+   * @param {string} message
+   * @param {any[]} params
+   */
+  private log(callee: string, message: string, ...params: any[]): SlimLoggerLogOutput {
+    let color;
+    let parametrizedMessage = message;
 
-  private log(callee: string, ...message: any[]): void {
-    if (parseInt(EBrowserLoggerLogLevel[callee as any]) >= BrowserLogger.globals!.logLevel!) {
-      const colors = BrowserLogger.globals.logColors as any;
-      const defaultColors = defaultBrowserLoggerLogColors as any;
-      let color = colors && colors[callee] ? colors[callee] : defaultColors[callee];
+    if (parseInt(ESlimLoggerLogLevels[callee as any]) >= SlimLogger.Globals!.logLevel!) {
+      const colors = SlimLogger.Globals.logColors as any;
+      const defaultColors = defaultSlimLoggerLogColors as any;
+      color = colors && colors[callee] ? colors[callee] : defaultColors[callee];
+      parametrizedMessage = this.replacePlaceholdersByParams(message, params);
       console.log(
-        `%c (${callee.toUpperCase()})`,
-        `color: ${color}`,
-        `[${this.getTimestamp()}] ${BrowserLogger.globals.appName || ''}: ${this.tag}`,
-        ...message,
+        color,
+        `[${this.getTimestamp()}]`,
+        '-',
+        callee.toUpperCase(),
+        `${SlimLogger.Globals.appName ? '- ' + SlimLogger.Globals.appName.toUpperCase() + ' -' : '-'} #${this.tag}:`,
+        parametrizedMessage,
       );
     }
+
+    return {
+      appName: SlimLogger.Globals.appName,
+      color,
+      message: parametrizedMessage,
+      callee,
+      tag: this.tag,
+    };
   }
-  verbose(...message: any[]) {
-    this.log('verbose', ...message);
+  /**
+   * Iterates over each param in the array replacing the number placeholders
+   * with the value of the param.
+   *
+   * @param {string} message
+   * @param {any[]} params
+   */
+  private replacePlaceholdersByParams(message: string, ...params: any[]): string {
+    if (!params || params[0].length === 0) return message;
+    params[0].forEach((p: any) => {
+      const index = params[0].indexOf(p);
+      message = message.replace(`{${index + 1}}`, params[0][index]);
+    });
+    return message;
   }
 
-  info(...message: any[]) {
-    this.log('info', ...message);
+  /**
+   * Logs a verbose message.
+   *
+   * @param message
+   * @param params
+   */
+  verbose(message: string, ...params: any[]): SlimLoggerLogOutput {
+    return this.log('verbose', message, ...params);
   }
-
-  debug(...message: any[]) {
-    this.log('debug', ...message);
+  /**
+   * Logs an info message.
+   *
+   * @param message
+   * @param params
+   */
+  info(message: string, ...params: any[]): SlimLoggerLogOutput {
+    return this.log('info', message, ...params);
   }
-
-  warn(...message: any[]) {
-    this.log('warn', ...message);
+  /**
+   * Logs a debug message.
+   *
+   * @param message
+   * @param params
+   */
+  debug(message: string, ...params: any[]): SlimLoggerLogOutput {
+    return this.log('debug', message, ...params);
   }
-
-  success(...message: any[]) {
-    this.log('success', ...message);
+  /**
+   * Logs a warn message.
+   *
+   * @param message
+   * @param params
+   */
+  warn(message: string, ...params: any[]): SlimLoggerLogOutput {
+    return this.log('warn', message, ...params);
   }
-
-  error(...message: any[]) {
-    this.log('error', ...message);
+  /**
+   * Logs a success message.
+   *
+   * @param message
+   * @param params
+   */
+  success(message: string, ...params: any[]): SlimLoggerLogOutput {
+    return this.log('success', message, ...params);
+  }
+  /**
+   * Logs an error message.
+   *
+   * @param message
+   * @param params
+   */
+  error(message: string, ...params: any[]): SlimLoggerLogOutput {
+    return this.log('error', message, ...params);
   }
 }

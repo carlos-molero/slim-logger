@@ -33,7 +33,7 @@ import SlimLogger from '@carlosmta/slim-logger'; // ES
 ## Usage
 
 ```javascript
-const logger = SlimLogger('tagName');
+const logger = new SlimLogger('tagName');
 logger.debug('Hello world!');
 
 // [2023-02-17T16:05:26.217Z] - DEBUG - #tagName: Hello world!

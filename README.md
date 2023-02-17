@@ -10,11 +10,11 @@ A simple logger library which wraps console.log API adding handy functionalities
 npm
 
 ```bash
-npm i @carlosmta/slim-logger
+npm i @carlosmta/browser-logger
 ```
 
 yarn
 
 ```bash
-yarn add @carlosmta/slim-logger
+yarn add @carlosmta/browser-logger
 ```

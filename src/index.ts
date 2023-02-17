@@ -81,8 +81,8 @@ export default class BrowserLogger {
   private log(callee: string, ...message: any[]): void {
     if (parseInt(EBrowserLoggerLogLevel[callee as any]) >= BrowserLogger.globals!.logLevel!) {
       const colors = BrowserLogger.globals.logColors as any;
-      let color = colors && colors[callee] ? colors[callee] : (defaultBrowserLoggerLogColors as any)[callee];
-
+      const defaultColors = defaultBrowserLoggerLogColors as any;
+      let color = colors && colors[callee] ? colors[callee] : defaultColors[callee];
       console.log(
         `%c (${callee.toUpperCase()})`,
         `color: ${color}`,

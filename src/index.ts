@@ -47,6 +47,7 @@ export enum ESlimLoggerColors {
   Grey = '\x1b[90m',
   BrightGray = '\x1b[37;1m',
   BrightGrey = '\x1b[37;1m',
+  Reset = '\x1B[00m',
 }
 /**
  * ESlimLoggerLogLevel
@@ -77,6 +78,7 @@ type SlimLoggerGlobalOptions = {
   appName?: string;
   logLevel?: ESlimLoggerLogLevels;
   logColors?: SlimLoggerLogColors;
+  jsonPrettyPrint?: boolean;
 };
 type SlimLoggerLogOutput = {
   appName?: string;
@@ -103,6 +105,7 @@ const defaultSlimLoggerLogColors: SlimLoggerLogColors = {
 export default class SlimLogger {
   static Globals: SlimLoggerGlobalOptions = {
     logLevel: ESlimLoggerLogLevels.verbose,
+    jsonPrettyPrint: true,
   };
   private tag: string;
 
@@ -140,13 +143,11 @@ export default class SlimLogger {
       const defaultColors = defaultSlimLoggerLogColors as any;
       color = colors && colors[callee] ? colors[callee] : defaultColors[callee];
       parametrizedMessage = this.replacePlaceholdersByParams(message, params);
+
       console.log(
-        color,
-        `[${this.getTimestamp()}]`,
-        '-',
-        callee.toUpperCase(),
-        `${SlimLogger.Globals.appName ? '- ' + SlimLogger.Globals.appName.toUpperCase() + ' -' : '-'} #${this.tag}:`,
-        parametrizedMessage,
+        `${color}[${this.getTimestamp()}] - ${callee.toUpperCase()} ${
+          SlimLogger.Globals.appName ? '- ' + SlimLogger.Globals.appName.toUpperCase() + ' -' : '-'
+        } #${this.tag}: ${parametrizedMessage}${ESlimLoggerColors.Reset}`,
       );
     }
 
@@ -170,7 +171,11 @@ export default class SlimLogger {
     if (!params || params[0].length === 0) return message;
     params[0].forEach((p: any) => {
       const index = params[0].indexOf(p);
-      message = message.replace(`{${index + 1}}`, params[0][index]);
+      const isObject = typeof params[0] === 'object' && Object.keys(p).length > 0;
+      const value = isObject
+        ? JSON.stringify(params[0][index], undefined, SlimLogger.Globals.jsonPrettyPrint ? 2 : undefined)
+        : params[0][index];
+      message = message.replace(`{${index + 1}}`, value);
     });
     return message;
   }

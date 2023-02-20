@@ -1,7 +1,7 @@
 # Slim Logger
 
 [![Tests](https://github.com/carlos-molero/slim-logger/actions/workflows/test.yml/badge.svg)](https://github.com/carlos-molero/pure-js-mapper/actions/workflows/test.yml)
-![Version](https://img.shields.io/badge/Version-1.0.2-blue)
+![Version](https://img.shields.io/badge/Version-1.0.3-blue)
 
 A simple logger library which wraps console.log API adding handy functionalities. It can be used both in the browser and server-side.
 
@@ -112,9 +112,15 @@ logger.debug('Hello world!');
 // [2023-02-17T16:05:26.217Z] - DEBUG - MY APP - #tagName: Hello world!
 ```
 
+- **JSON Pretty print**
+
+```javascript
+SlimLogger.Globals.jsonPrettyPrint = true; // default
+```
+
 ### Parameters
 
-I decided to follow a similar approach to the popular Java logging library: [log4j](https://logging.apache.org/log4j/2.x/), the second argument that the functions accept to log messages is an array of parameters that will be substituted according to the index in which they are added.
+I decided to follow a similar approach to the popular Java logging library: [log4j](https://logging.apache.org/log4j/2.x/), the second argument that the functions accept to log messages is an array of parameters that will be substituted according to the order in which they are added.
 
 ```javascript
 logger.verbose('My name is {1} and I have {2} years old right now', 'Carlos', 28);

@@ -52,4 +52,8 @@ describe('[UNIT] - SlimLogger', function () {
     expect(message.indexOf('Carlos') > -1).toBeTruthy();
     expect(message.indexOf('28') > -1).toBeTruthy();
   });
+
+  it('Should stringify JSON params', function () {
+    logger.verbose('Hello World in JSON {1}', { hello: 'world' });
+  });
 });

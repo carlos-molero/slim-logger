@@ -171,10 +171,8 @@ export default class SlimLogger {
     if (!params || params[0].length === 0) return message;
     params[0].forEach((p: any) => {
       const index = params[0].indexOf(p);
-      const isObject = typeof params[0] === 'object' && Object.keys(p).length > 0;
-      const value = isObject
-        ? JSON.stringify(params[0][index], undefined, SlimLogger.Globals.jsonPrettyPrint ? 2 : undefined)
-        : params[0][index];
+      const isObject = p && typeof p === 'object' && Object.keys(p).length > 0;
+      const value = isObject ? JSON.stringify(p, undefined, SlimLogger.Globals.jsonPrettyPrint ? 2 : undefined) : p;
       message = message.replace(`{${index + 1}}`, value);
     });
     return message;

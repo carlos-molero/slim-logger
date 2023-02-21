@@ -1,6 +1,6 @@
 {
   "name": "@carlosmta/slim-logger",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": "git@github.com:carlos-molero/slim-logger.git",

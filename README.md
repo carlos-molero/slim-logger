@@ -1,7 +1,7 @@
 # Slim Logger
 
 [![Tests](https://github.com/carlos-molero/slim-logger/actions/workflows/test.yml/badge.svg)](https://github.com/carlos-molero/pure-js-mapper/actions/workflows/test.yml)
-![Version](https://img.shields.io/badge/Version-1.0.3-blue)
+![Version](https://img.shields.io/badge/Version-1.0.4-blue)
 
 A simple logger library which wraps console.log API adding handy functionalities. It can be used both in the browser and server-side.
 

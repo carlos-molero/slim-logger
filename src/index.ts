@@ -49,6 +49,7 @@ export enum ESlimLoggerColors {
   BrightGrey = '\x1b[37;1m',
   Reset = '\x1B[00m',
 }
+
 /**
  * ESlimLoggerLogLevel
  */
@@ -60,6 +61,7 @@ export enum ESlimLoggerLogLevels {
   'success' = 4,
   'error' = 5,
 }
+
 /**
  * SlimLoggerLogColors
  */
@@ -71,6 +73,7 @@ type SlimLoggerLogColors = {
   success?: ESlimLoggerColors;
   error?: ESlimLoggerColors;
 };
+
 /**
  * SlimLoggerGlobalOptions
  */
@@ -80,6 +83,10 @@ type SlimLoggerGlobalOptions = {
   logColors?: SlimLoggerLogColors;
   jsonPrettyPrint?: boolean;
 };
+
+/**
+ * SlimLoggerLogOutput
+ */
 type SlimLoggerLogOutput = {
   appName?: string;
   color: string;
@@ -117,6 +124,7 @@ export default class SlimLogger {
   constructor(tag: string) {
     this.tag = tag;
   }
+
   /**
    * Returns the current timestamp.
    *
@@ -125,6 +133,7 @@ export default class SlimLogger {
   private getTimestamp(): string {
     return new Date().toISOString();
   }
+
   /**
    * Calls the console.log function.
    *
@@ -159,6 +168,7 @@ export default class SlimLogger {
       tag: this.tag,
     };
   }
+
   /**
    * Iterates over each param replacing the placeholder by its value.
    *
@@ -189,6 +199,7 @@ export default class SlimLogger {
   verbose(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('verbose', message, ...params);
   }
+
   /**
    * Logs an info message.
    *
@@ -200,6 +211,7 @@ export default class SlimLogger {
   info(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('info', message, ...params);
   }
+
   /**
    * Logs a debug message.
    *
@@ -211,6 +223,7 @@ export default class SlimLogger {
   debug(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('debug', message, ...params);
   }
+
   /**
    * Logs a warn message.
    *
@@ -222,6 +235,7 @@ export default class SlimLogger {
   warn(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('warn', message, ...params);
   }
+
   /**
    * Logs a success message.
    *
@@ -233,6 +247,7 @@ export default class SlimLogger {
   success(message: string, ...params: any[]): SlimLoggerLogOutput {
     return this.log('success', message, ...params);
   }
+
   /**
    * Logs an error message.
    *

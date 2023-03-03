@@ -94,6 +94,7 @@ type SlimLoggerLogOutput = {
   callee: string;
   tag: string;
 };
+
 /**
  * defaultSlimLoggerLogColors
  */
@@ -119,16 +120,16 @@ export default class SlimLogger {
   /**
    * Creates a SlimLogger instance.
    *
-   * @param {string} tag The name of the file where the logger is created
+   * @param {string} tag
    */
   constructor(tag: string) {
     this.tag = tag;
   }
 
   /**
-   * Returns the current timestamp.
+   * Returns the current timestamp ISO string.
    *
-   * @returns {string} current ISO date string
+   * @returns {string} string
    */
   private getTimestamp(): string {
     return new Date().toISOString();
@@ -137,7 +138,7 @@ export default class SlimLogger {
   /**
    * Calls the console.log function.
    *
-   * @param {string} callee the callee function name
+   * @param {string} callee
    * @param {string} message
    * @param {any[]} params
    *
@@ -191,8 +192,8 @@ export default class SlimLogger {
   /**
    * Logs a verbose message.
    *
-   * @param message
-   * @param params
+   * @param {string} message
+   * @param {any[]} params
    *
    * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
@@ -203,8 +204,8 @@ export default class SlimLogger {
   /**
    * Logs an info message.
    *
-   * @param message
-   * @param params
+   * @param {string} message
+   * @param {any[]} params
    *
    * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
@@ -215,8 +216,8 @@ export default class SlimLogger {
   /**
    * Logs a debug message.
    *
-   * @param message
-   * @param params
+   * @param {string} message
+   * @param {any[]} params
    *
    * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
@@ -227,8 +228,8 @@ export default class SlimLogger {
   /**
    * Logs a warn message.
    *
-   * @param message
-   * @param params
+   * @param {string} message
+   * @param {any[]} params
    *
    * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
@@ -239,8 +240,8 @@ export default class SlimLogger {
   /**
    * Logs a success message.
    *
-   * @param message
-   * @param params
+   * @param {string} message
+   * @param {any[]} params
    *
    * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
@@ -251,8 +252,8 @@ export default class SlimLogger {
   /**
    * Logs an error message.
    *
-   * @param message
-   * @param params
+   * @param {string} message
+   * @param {any[]} params
    *
    * @returns {SlimLoggerLogOutput} SlimLoggerLogOutput
    */
